@@ -10,8 +10,8 @@
     <RootNamespace>LibSass</RootNamespace>
     <AssemblyName>LibSass.NET</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
-    <IntermediateOutputPath>$(SolutionDir)bin\$(Configuration)\obj\</IntermediateOutputPath>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>bin\$(Configuration)\obj\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -63,13 +63,21 @@
     <Compile Include="Types\TypeFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="LibSass.Net.nuspec" />
+    <None Include="LibSass.Net.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="libsassnet.targets" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Runtime.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\bin\$(Configuration)\$(LibSassPlatform)\libsass.dll">
+      <Link>libsass.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- Detect Platform -->
@@ -107,12 +115,9 @@
     </OSVersionInformation>
   </Target>
   <!-- Build LibSass -->
-  <Target Name="AfterBuild" DependsOnTargets="GetOSIdentifiers">
+  <Target Name="BeforeBuild" DependsOnTargets="GetOSIdentifiers">
     <Message Importance="High" Text="Commencing build for platform: $(LibSassPlatform)" />
-
     <!-- Windows -->
-    <MSBuild Projects="..\LibSass\win\libsass.sln" BuildInParallel="true"
-             Condition="'$(LibSassPlatform)' == 'Win32' or '$(LibSassPlatform)' == 'Win64'"
-             Properties="Configuration=$(Configuration);Platform=$(LibSassPlatform);OutDir=$(OutputPath);IntDir=$(IntermediateOutputPath)" />
+    <MSBuild Projects="..\LibSass\win\libsass.sln" BuildInParallel="true" Condition="'$(LibSassPlatform)' == 'Win32' or '$(LibSassPlatform)' == 'Win64'" Properties="Configuration=$(Configuration);Platform=$(LibSassPlatform);OutDir=$(SolutionDir)bin\$(Configuration)\$(LibSassPlatform)\;IntDir=$(SolutionDir)bin\$(Configuration)\$(LibSassPlatform)\obj\" />
   </Target>
 </Project>

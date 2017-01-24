@@ -17,7 +17,10 @@
   )
 )
 
-"%PathToMsBuild32%\MSBuild.exe" LibSass.NET.sln /nologo /v:n /m:4 /p:Configuration=Release
+"%PathToMsBuild32%\MSBuild.exe" LibSass.NET.sln /nologo /v:n /m:4 /p:Configuration=Release /p:LibSassPlatform=Win32
+"%PathToMsBuild32%\MSBuild.exe" LibSass.NET.sln /nologo /v:n /m:4 /p:Configuration=Release /p:LibSassPlatform=Win64
+REM TODO: arm Build
+REM TODO: arm64 Build
 
 .nuget\NuGet Pack "LibSass.NET\LibSass.NET.csproj" 					-Properties Configuration=Release
 .nuget\NuGet Pack "contrib\LibSass.NET.Web\LibSass.NET.Web.csproj" 	-Properties Configuration=Release
